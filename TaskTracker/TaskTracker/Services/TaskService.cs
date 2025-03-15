@@ -5,19 +5,19 @@ namespace TaskTracker.Services;
 
 public class TaskService
 {
-    private readonly string _filePath = "tasks.json";
+    private const string FilePath = "tasks.json";
 
     public TaskService()
     {
-        if (!File.Exists(_filePath))
+        if (!File.Exists(FilePath))
         {
-            File.WriteAllText(_filePath, "[]");
+            File.WriteAllText(FilePath, "[]");
         }
     }
 
     public List<TaskModel> GetAllTasks()
     {
-        var json = File.ReadAllText(_filePath);
+        var json = File.ReadAllText(FilePath);
         return JsonSerializer.Deserialize<List<TaskModel>>(json) ?? new List<TaskModel>();
     }
 
@@ -30,7 +30,7 @@ public class TaskService
     public void AddTask(TaskModel task)
     {
         var tasks = GetAllTasks();
-        task.IdTask = tasks.Any() ? tasks.Max(t => t.IdTask) + 1 : 1;
+        task.IdTask = tasks.Count != 0 ? tasks.Max(t => t.IdTask) + 1 : 1;
         tasks.Add(task);
         SaveTasks(tasks);
     }
@@ -39,29 +39,25 @@ public class TaskService
     {
         var tasks = GetAllTasks();
         var task = tasks.FirstOrDefault(t => t.IdTask == updatedTask.IdTask);
-        if (task != null)
-        {
-            task.Desc = updatedTask.Desc;
-            task.Date = updatedTask.Date;
-            task.LastUpdate = DateTime.Now;
-            SaveTasks(tasks);
-        }
+        if (task == null) return;
+        task.Desc = updatedTask.Desc;
+        task.Date = updatedTask.Date;
+        task.LastUpdate = DateTime.Now;
+        SaveTasks(tasks);
     }
 
     public void DeleteTask(int id)
     {
         var tasks = GetAllTasks();
         var task = tasks.FirstOrDefault(t => t.IdTask == id);
-        if (task != null)
-        {
-            tasks.Remove(task);
-            SaveTasks(tasks);
-        }
+        if (task == null) return;
+        tasks.Remove(task);
+        SaveTasks(tasks);
     }
 
     private void SaveTasks(List<TaskModel> tasks)
     {
         var json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(_filePath, json);
+        File.WriteAllText(FilePath, json);
     }
 }
