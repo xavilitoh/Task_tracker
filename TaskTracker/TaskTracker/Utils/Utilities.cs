@@ -16,7 +16,7 @@ public static class Utilities
             
         foreach (var task in tasks)
         {
-            table.AddRow(task.IdTask.ToString(), task.Desc, task.Date.ToShortDateString(), task.LastUpdate.ToShortDateString(), task.StatusEnum.ToString());
+            table.AddRow(task.IdTask.ToString(), task.Desc, task.Date.ToShortDateString(), task.LastUpdate.ToShortDateString(), task.Status.ToString());
         }
             
         AnsiConsole.Write(table);

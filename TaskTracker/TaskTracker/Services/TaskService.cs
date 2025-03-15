@@ -42,6 +42,7 @@ public class TaskService
         if (task == null) return;
         task.Desc = updatedTask.Desc;
         task.Date = updatedTask.Date;
+        task.Status = updatedTask.Status;
         task.LastUpdate = DateTime.Now;
         SaveTasks(tasks);
     }

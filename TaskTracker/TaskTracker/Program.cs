@@ -68,17 +68,17 @@
                     break;
             
                 case "list done":
-                    var doneTasks = taskService.GetAllTasks().Where(t => t.StatusEnum.ToString() == "done").ToList();
+                    var doneTasks = taskService.GetAllTasks().Where(t => t.Status.ToString() == "done").ToList();
                     Utilities.PrintTable(doneTasks);
                     break;
             
                 case "list todo":
-                    var todoTasks = taskService.GetAllTasks().Where(t => t.StatusEnum.ToString() == "todo").ToList();
+                    var todoTasks = taskService.GetAllTasks().Where(t => t.Status.ToString() == "todo").ToList();
                     Utilities.PrintTable(todoTasks);
                     break;
             
                 case "list in-progress":
-                    var inProgressTasks = taskService.GetAllTasks().Where(t => t.StatusEnum.ToString() == "in_progress").ToList();
+                    var inProgressTasks = taskService.GetAllTasks().Where(t => t.Status.ToString() == "in_progress").ToList();
                     Utilities.PrintTable(inProgressTasks);
                     break;
             
@@ -93,7 +93,7 @@
                         var task = taskService.GetTaskById(inProgressId);
                         if (task != null)
                         {
-                            task.StatusEnum = StatusEnum.in_progress;
+                            task.Status = StatusEnum.in_progress;
                             task.LastUpdate = DateTime.Now;
                             taskService.UpdateTask(task);
                             Console.WriteLine("Task marked as in-progress.");
@@ -120,7 +120,7 @@
                         var task = taskService.GetTaskById(doneId);
                         if (task != null)
                         {
-                            task.StatusEnum = StatusEnum.done;
+                            task.Status = StatusEnum.done;
                             task.LastUpdate = DateTime.Now;
                             taskService.UpdateTask(task);
                             Console.WriteLine("Task marked as done.");
